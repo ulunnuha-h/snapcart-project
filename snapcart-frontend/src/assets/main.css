@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+  margin: 0 auto;
+  font-family: "Poppins", sans-serif;
+}
+
+@layer base{
+  #app{@apply bg-slate-950}
+  h1{@apply text-8xl}
+  h2{@apply text-6xl}
+  h3{@apply text-4xl}
+  h4{@apply text-2xl}
+  h5{@apply text-xl}
+}
