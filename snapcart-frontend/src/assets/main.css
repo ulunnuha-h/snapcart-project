@@ -6,13 +6,18 @@
   margin: 0 auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
+  font-size: 14px;
 }
 
 @layer base{
-  #app{@apply bg-slate-950}
-  h1{@apply text-8xl}
-  h2{@apply text-6xl}
-  h3{@apply text-4xl}
-  h4{@apply text-2xl}
-  h5{@apply text-xl}
+  #app{@apply bg-gray-800}
+  h1{@apply text-4xl}
+  h2{@apply text-3xl}
+  h3{@apply text-2xl}
+  h4{@apply text-xl}
+  h5{@apply text-lg}
+}
+
+@layer components{
+  .btn-primary{@apply bg-sky-600 rounded-md hover:brightness-110 active:brightness-75 transition-all font-medium text-gray-50}
 }

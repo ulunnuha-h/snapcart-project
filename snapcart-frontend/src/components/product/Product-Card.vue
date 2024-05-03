@@ -1,24 +1,25 @@
 <script setup>
     import { StarIcon, ArrowRightIcon } from "@heroicons/vue/24/solid";
-    const props = defineProps(["title", "toggle"])
+    const props = defineProps(["data", "toggle", "id"])
 </script>
 
 <template>
-    <div class="bg-slate-900 rounded-md text-slate-50 overflow-hidden">
-        <img src="https://placehold.co/600x400" alt="product-image" class="aspect-[3/2]">
-        <section class="p-4 flex flex-col">
-            <h5 class="text-slate-300">{{ props.title }}</h5>
-            <div class="flex items-center justify-between mb-2">
-                <h4 class="font-medium">Rp 30.000,00</h4>
-                <span class="flex items-center gap-1 text-amber-400">
-                    <StarIcon class="h-6 w-6" />
-                    <span>4.2/5</span>
-                </span>
+    <div class="bg-gray-900 rounded-md text-slate-50 overflow-hidden border-[1px] border-gray-900 max-w-[300px]">
+        <section class="w-full aspect-square relative">
+            <img :src="props.data.img" alt="product-image" class="h-full w-full object-cover">
+            <span class="flex items-center gap-1 text-amber-400 absolute top-4 left-4 bg-gray-800 py-1 px-2 rounded-md">
+                <StarIcon class="h-4 w-4" />
+                <span>{{props.data.rating}}/5</span>
+            </span>
+            <div class="absolute bottom-0 p-2 z-10">
+                <h3 class="font-semibold">Rp {{ props.data.price.toLocaleString() }}</h3>
+                <p class="text-gray-300 text-base line-clamp-1">{{ props.data.title }}</p>
             </div>
-            <p class="line-clamp-2 mb-8 text-slate-400">
-                Lorem ipsum dolor sit amet consectetur adipiscing elit. Donec maximus dapibus velit, ac pharetra urna congue at. Duis sed suscipit lacus. Nam aliquet semper malesuada. Fusce gravida nulla non tincidunt tristique. Maecenas eu purus sodales, cursus dolor id, accumsan arcu. Vivamus molestie arcu ut ex euismod convallis. Praesent at lectus tortor. Vivamus tortor lacus, varius id semper at, dapibus vel nisi. Integer rhoncus ligula et dolor gravida, vitae pretium nisi venenatis.
-            </p>
-            <button class="bg-slate-800 rounded-lg p-2 border-b-2 border-b-slate-950 border-t-2 border-t-slate-700 hover:border-t-slate-600 transition-all active:border-t-slate-950 active:border-b-slate-700" v-on:click="props.toggle">
+            <div class="bg-gradient-to-t from-gray-900 via-gray-900/75 via-75%% to-transparent w-full h-1/3 absolute bottom-0"></div>
+        </section>
+        <section class="p-4 pt-0 flex flex-col">
+            <hr class="mb-4 border-gray-800">
+            <button class="btn-primary py-2" v-on:click="()=>props.toggle(props.id)">
                 <span>See Details <ArrowRightIcon class="h-4 w-4 inline"/></span>
             </button>
         </section>
