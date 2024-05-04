@@ -1,11 +1,11 @@
 <script setup>
 import NavBar from './components/global/Nav-Bar.vue';
-import MainIndex from './pages/Main/Main-Index.vue';
+import { RouterView } from 'vue-router';
 </script>
 
 <template>
   <NavBar/>
-  <MainIndex/>
+  <RouterView/>
 </template>
 
 <style scoped>

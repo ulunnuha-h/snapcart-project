@@ -52,7 +52,7 @@
                 <ProductCard v-for="(val, idx) in data" :key="idx" :data="val" :toggle="toggleSideDetail" :id="idx"/>
             </div>
             <div 
-                :class="{'w-1/3 h-fit opacity-100 border-l-[1px] border-l-gray-900 p-4':sideDetail}" 
+                :class="{'w-1/3 h-fit opacity-100 border-l-[1px] border-l-gray-800 p-4':sideDetail}" 
                 class="opacity-0 overflow-hidden transition-all  w-0 h-0">
                 <h3 class="text-gray-100 font-bold rounded-md">{{data[activeId].title}}</h3>
                 <img class="w-full aspect-square object-cover my-4 rounded-md" :src="data[activeId].img" alt="">
