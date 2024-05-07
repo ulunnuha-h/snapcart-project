@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/solid";
+import { EyeIcon, EyeSlashIcon, ArrowLeftIcon } from "@heroicons/vue/24/solid";
 const data = ref([
   {
     label : "Email address",
@@ -39,6 +39,10 @@ const toggleHandler = (idx) => {
 </script>
 <template>
     <div class="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gray-900">
+      <RouterLink class="absolute top-4 left-4 flex hover:gap-3 gap-2 text-white items-center font-semibold transition-all" to="/">
+        <ArrowLeftIcon class="w-4 h-4"/>
+        <span>Back</span>
+      </RouterLink>
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-10 text-center font-bold leading-9 tracking-tight text-gray-200">Register your account</h2>
       </div>

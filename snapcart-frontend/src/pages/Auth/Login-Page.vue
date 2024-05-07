@@ -1,9 +1,14 @@
 <script setup>
 import SnapcartLogo from '@/components/icons/Snapcart-Logo.vue';
+import { ArrowLeftIcon } from "@heroicons/vue/24/solid";
 
 </script>
 <template>
     <div class="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gray-900">
+      <RouterLink class="absolute top-4 left-4 flex hover:gap-3 gap-2 text-white items-center font-semibold transition-all" to="/">
+        <ArrowLeftIcon class="w-4 h-4"/>
+        <span>Back</span>
+      </RouterLink>
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <SnapcartLogo class="w-full flex justify-center scale-150"/>
         <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-200">Sign in to your account</h2>

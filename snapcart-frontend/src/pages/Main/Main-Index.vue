@@ -2,6 +2,7 @@
     import ProductCard from '@/components/product/Product-Card.vue';
     import { ref } from 'vue';
     import { StarIcon } from "@heroicons/vue/24/solid";
+import NavBar from '@/components/global/Nav-Bar.vue';
 
     const sideDetail = ref(false);
     const activeId = ref(0);
@@ -42,6 +43,7 @@
 </script>
 
 <template>
+    <NavBar/>
     <main class="min-h-screen">
         <section 
             :class="{'gap-4':sideDetail}"
