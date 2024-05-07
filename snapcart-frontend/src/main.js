@@ -5,6 +5,7 @@ import LoginPage from './pages/Auth/Login-Page.vue'
 import RegisterPage from './pages/Auth/Register-Page.vue'
 import { createApp } from 'vue'
 import App from './App.vue/'
+import CreatePage from './pages/Product/Create-Page.vue'
 
 const routes = [
     {
@@ -18,6 +19,10 @@ const routes = [
     {
         path : '/register',
         component: RegisterPage
+    },
+    {
+        path : '/create',
+        component: CreatePage
     }
 ]
 
