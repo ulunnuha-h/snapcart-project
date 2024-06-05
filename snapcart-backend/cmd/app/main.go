@@ -25,7 +25,8 @@ func main() {
 	err := http.ListenAndServe(":81", r)
 	if err != nil {
 		log.Panic(err.Error())
+	} else {
+		fmt.Print("Server is running!")
 	}
 
-	fmt.Print("Server is running!")
 }
