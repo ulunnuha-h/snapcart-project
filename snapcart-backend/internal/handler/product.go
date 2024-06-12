@@ -12,12 +12,11 @@ import (
 func GetAllProduct(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
-	products := []model.Product{
-		{ID: 1, Title: "The Blue Shoes", Price: 20000, Rating: 2.3, Image: ""},
-	}
+	db := config.OpenDatabase()
+	var product []model.Product
+	db.Find(&product)
 
-	response := config.GetResponse[model.Product](products)
-
+	response := config.GetResponse[model.Product](product)
 	json, err := json.Marshal(response)
 	if err != nil {
 		return
