@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -13,9 +12,14 @@ import (
 func OpenDatabase() *gorm.DB{
 	var db *gorm.DB
 	var err error
+	var dsn string
 
-	dsn := os.Getenv("POSTGRES_URI")
-	fmt.Print(dsn)
+	if os.Getenv("APP_ENV") == "local"{
+		dsn = os.Getenv("POSTGRES_LOCAL")
+	} else {
+		dsn = os.Getenv("POSTGRES_PROD")
+	}
+	
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
