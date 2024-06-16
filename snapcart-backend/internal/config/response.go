@@ -6,10 +6,10 @@ type Response[T any] struct {
 	Data    []T    `json:"data"`
 }
 
-func GetResponse[T any](data []T) Response[T] {
+func GetResponse[T any](data []T, status bool, message string) Response[T] {
 	response := Response[T]{
-		Success: true,
-		Message: "Work",
+		Success: status,
+		Message: message,
 		Data:    data,
 	}
 	return response

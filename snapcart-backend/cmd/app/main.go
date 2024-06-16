@@ -7,7 +7,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"github.com/ulunnuha-h/snapcart/internal/config"
 	"github.com/ulunnuha-h/snapcart/internal/handler"
+	"github.com/ulunnuha-h/snapcart/internal/middleware"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -21,9 +23,12 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	// db := config.OpenDatabase()
+	// Open Database
+	config.OpenDatabase()
 
-	r.HandleFunc("/product", handler.GetAllProduct).Methods("GET")
+	// Register subrouter
+	r.Use(middleware.ContentTypeApplicationJsonMiddleware)
+	handler.ProductRouter(r)
 	r.HandleFunc("/", index)
 
 	http.Handle("/", r)
@@ -31,7 +36,7 @@ func main() {
 	if err != nil {
 		log.Panic(err.Error())
 	} else {
-		fmt.Print("Server is running!")
+		log.Println("Server is running on :81")
 	}
 
 }

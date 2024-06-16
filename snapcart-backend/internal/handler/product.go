@@ -5,18 +5,17 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/ulunnuha-h/snapcart/internal/config"
 	"github.com/ulunnuha-h/snapcart/internal/model"
 )
 
-func GetAllProduct(w http.ResponseWriter, r *http.Request) {
+func getAllProduct(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
+	var products []model.Product
+	config.DB.Find(&products)
 
-	db := config.OpenDatabase()
-	var product []model.Product
-	db.Find(&product)
-
-	response := config.GetResponse[model.Product](product)
+	response := config.GetResponse(products, true, "Successfully get all products!")
 	json, err := json.Marshal(response)
 	if err != nil {
 		return
@@ -25,6 +24,13 @@ func GetAllProduct(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
-func Test() {
-	fmt.Print("Print from Product handlers")
+func addProduct(w http.ResponseWriter, r *http.Request){
+	fmt.Println(r.Form)
+
+}
+
+func ProductRouter(r *mux.Router) {
+	s := r.PathPrefix("/products").Subrouter()
+	s.HandleFunc("", getAllProduct).Methods("GET")
+	s.HandleFunc("", addProduct).Methods("POST")
 }

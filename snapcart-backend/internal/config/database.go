@@ -9,7 +9,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func OpenDatabase() *gorm.DB{
+var DB *gorm.DB
+
+func OpenDatabase(){
 	var db *gorm.DB
 	var err error
 	var dsn string
@@ -28,5 +30,5 @@ func OpenDatabase() *gorm.DB{
 
 	db.AutoMigrate(&model.Product{})
 
-	return db
+	DB = db
 }
