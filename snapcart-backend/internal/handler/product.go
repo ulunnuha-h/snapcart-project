@@ -2,13 +2,16 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/schema"
 	"github.com/ulunnuha-h/snapcart/internal/config"
 	"github.com/ulunnuha-h/snapcart/internal/model"
 )
+
+var decoder = schema.NewDecoder()
 
 func getAllProduct(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
@@ -25,8 +28,28 @@ func getAllProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func addProduct(w http.ResponseWriter, r *http.Request){
-	fmt.Println(r.Form)
+	r.PostFormValue("")
 
+	var product model.Product
+	err := decoder.Decode(&product, r.PostForm)
+	if err != nil {
+		log.Fatal(err.Error())
+		return
+	}
+
+	err = config.DB.Create(&product).Error
+	if err != nil {
+		log.Fatal(err.Error())
+		return
+	}
+
+	response := config.GetResponse([]model.Product{product}, true, "Successfully add a product!")
+	json, err := json.Marshal(response)
+	if err != nil {
+		return
+	}
+
+	w.Write(json)
 }
 
 func ProductRouter(r *mux.Router) {
