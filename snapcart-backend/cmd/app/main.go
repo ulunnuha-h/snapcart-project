@@ -27,7 +27,7 @@ func main() {
 	config.OpenDatabase()
 
 	// Register subrouter
-	r.Use(middleware.ContentTypeApplicationJsonMiddleware)
+	r.Use(middleware.BasicSetup)
 	handler.ProductRouter(r)
 	r.HandleFunc("/", index)
 
