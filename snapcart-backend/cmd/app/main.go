@@ -29,6 +29,7 @@ func main() {
 	// Register subrouter
 	r.Use(middleware.BasicSetup)
 	handler.ProductRouter(r)
+	handler.AuthRouter(r)
 	r.HandleFunc("/", index)
 
 	http.Handle("/", r)

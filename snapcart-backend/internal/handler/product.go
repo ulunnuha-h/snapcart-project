@@ -11,8 +11,6 @@ import (
 	"github.com/ulunnuha-h/snapcart/internal/model"
 )
 
-var decoder = schema.NewDecoder()
-
 func getAllProduct(w http.ResponseWriter, r *http.Request) {
 	var products []model.Product
 	if err := config.DB.Find(&products).Error; err != nil {
@@ -47,7 +45,7 @@ func getProductById(w http.ResponseWriter, r *http.Request){
 
 func addProduct(w http.ResponseWriter, r *http.Request) {
 	var product model.Product
-	if err := decoder.Decode(&product, r.PostForm); err != nil {
+	if err := schema.NewDecoder().Decode(&product, r.PostForm); err != nil {
 		logrus.Errorf("Error decoding form data: %v", err)
 		http.Error(w, "Error decoding form data", http.StatusBadRequest)
 		return
@@ -100,7 +98,7 @@ func updateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := decoder.Decode(&product, r.PostForm); err != nil {
+	if err := schema.NewDecoder().Decode(&product, r.PostForm); err != nil {
 		logrus.Errorf("Error decoding form data: %v", err)
 		http.Error(w, "Error decoding form data", http.StatusBadRequest)
 		return

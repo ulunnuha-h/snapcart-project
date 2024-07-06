@@ -29,6 +29,7 @@ func OpenDatabase(){
 	}
 
 	db.AutoMigrate(&model.Product{})
+	db.AutoMigrate(&model.User{})
 
 	DB = db
 }
