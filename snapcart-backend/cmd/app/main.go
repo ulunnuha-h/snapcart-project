@@ -33,11 +33,10 @@ func main() {
 	r.HandleFunc("/", index)
 
 	http.Handle("/", r)
+
+	log.Println("Server is running on :81")
 	err := http.ListenAndServe(":81", r)
 	if err != nil {
 		log.Panic(err.Error())
-	} else {
-		log.Println("Server is running on :81")
 	}
-
 }

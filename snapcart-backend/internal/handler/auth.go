@@ -3,7 +3,10 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"os"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 	"github.com/sirupsen/logrus"
@@ -30,6 +33,12 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := config.DB.First(&user).Where("email = ?", user.Email).Error; err == nil {
+		logrus.Errorf("Error email have been used: %v", err)
+		http.Error(w, "Error email have been used", http.StatusBadRequest)
+		return
+	}
+
 	hashPassword, err := HashPassword(user.Password)
 
 	if err != nil{
@@ -53,7 +62,66 @@ func registerUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func loginUser(w http.ResponseWriter, r *http.Request) {
+    var creds model.Credential
+	var user model.User
+
+	if err := schema.NewDecoder().Decode(&creds, r.PostForm); err != nil {
+		logrus.Errorf("Error decoding form data: %v", err)
+		http.Error(w, "Error decoding form data", http.StatusBadRequest)
+		return
+	}
+
+	err := config.DB.Where("email = ?", creds.Email).First(&user).Error;
+
+	if err != nil || !CheckPasswordHash(creds.Password, user.Password) {
+		w.WriteHeader(http.StatusUnauthorized)
+		logrus.Errorf("Error email or password not found: %v", err)
+		http.Error(w, "Error email or password not found", http.StatusBadRequest)
+		return
+	}
+
+    expirationTime := time.Now().Add(15 * time.Minute)
+    claims := &model.Claim{
+		ID: user.ID ,
+        Email: user.Email,
+        StandardClaims: jwt.StandardClaims{
+            ExpiresAt: expirationTime.Unix(),
+        },
+    }
+
+    token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	jwtKey := []byte(os.Getenv("JWT_KEY"))
+    tokenString, err := token.SignedString(jwtKey)
+    if err != nil {
+		logrus.Errorf("Error: %v", err)
+        w.WriteHeader(http.StatusInternalServerError)
+        return
+    }
+
+	if os.Getenv("APP_ENV") == "local" {
+		http.SetCookie(w, &http.Cookie{
+			Name:    "jwtToken",
+			Value:   tokenString,
+			Expires: expirationTime,
+			Path: "/",
+			HttpOnly: true,
+		})	
+	} else {
+		http.SetCookie(w, &http.Cookie{
+			Name:    "jwtToken",
+			Value:   tokenString,
+			Expires: expirationTime,
+			Path: "/",
+			HttpOnly: true,
+			Secure: true,  // Set to true in production
+		})
+	}
+}
+
+
 func AuthRouter(r *mux.Router) {
 	s := r.PathPrefix("/auth").Subrouter()
 	s.HandleFunc("/register", registerUser).Methods("POST")
+	s.HandleFunc("/login", loginUser).Methods("POST")
 }

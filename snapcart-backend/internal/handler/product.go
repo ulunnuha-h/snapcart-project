@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/sirupsen/logrus"
 	"github.com/ulunnuha-h/snapcart/internal/config"
+	"github.com/ulunnuha-h/snapcart/internal/middleware"
 	"github.com/ulunnuha-h/snapcart/internal/model"
 )
 
@@ -119,9 +120,12 @@ func updateProduct(w http.ResponseWriter, r *http.Request) {
 
 func ProductRouter(r *mux.Router) {
 	s := r.PathPrefix("/products").Subrouter()
+
 	s.HandleFunc("", getAllProduct).Methods("GET")
+	s.HandleFunc("/{id}", getProductById).Methods("GET")
+
+	s.Use(middleware.Protected)
 	s.HandleFunc("", addProduct).Methods("POST")
 	s.HandleFunc("/{id}", deleteProduct).Methods("DELETE")
 	s.HandleFunc("/{id}", updateProduct).Methods("PUT")
-	s.HandleFunc("/{id}", getProductById).Methods("GET")
 }
